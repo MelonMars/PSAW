@@ -8,9 +8,9 @@ class PSAWConnect:
         self._userlogin()
 
     def _userlogin(self):
-        """
-        Function to login(don't use this)
-        """
+        
+       # Function to login(don't use this)
+        
         global _client
         headers = {
             "x-csrftoken": "a",
@@ -85,7 +85,26 @@ class PSAWConnect:
                     _actor = dict["actor_username"]
                     print(f"{_actor} is now following you!".replace('&#39;', '\''))
                 print("\n")
+    def profilecomment(self, message:str="None", commentee_id:str="", parent_id:str=""):
+        headers = {
+            "x-csrftoken": self.csrf_token,
+            "X-Token": self.token,
+            "Cookie": "scratchcsrftoken="
+                      + self.csrf_token
+                      + ";scratchlanguage=en;scratchsessionsid="
+                      + self.session_id
+                      + ";",
+            "referer": "https://scratch.mit.edu",
+        }
 
+        content = {
+            "commentee_id": commentee_id,
+            "content": message,
+            "parent_id": parent_id,
+        }
+        res = requests.post("https://scratch.mit.edu/site-api/comments/user/MelonMars/add/", headers=headers, data=json.dumps(content))
+        print(res)
+    
     def number_of_messages(self, user:str=_client):
         if self.user_exists(user):
             res = requests.get(f"https://api.scratch.mit.edu/users/{user}/messages/count").json()["count"]
@@ -93,7 +112,6 @@ class PSAWConnect:
         else:
             return "User does not exist!"
 
-    
     def user_exists(self, user:str=_client):
         try:
             res = requests.get(f"scratch.mit.edu/users/{user}")
@@ -101,6 +119,3 @@ class PSAWConnect:
             return True
         except:
             return False
-
-e = PSAWConnect("MelonMars", "benny1113!")
-e.printmessages()
