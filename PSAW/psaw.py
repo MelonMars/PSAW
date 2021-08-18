@@ -46,7 +46,7 @@ class PSAWConnect:
             "referer": "https://scratch.mit.edu",
         }
 
-    def getmessages(self, all:bool=True, limit:int=10, filter:str="all"):
+    def printmessages(self, all:bool=True, limit:int=10, filter:str="all"):
         res = requests.get(f"https://api.scratch.mit.edu/users/{self.username}/messages?x-token={self.token}&filter={filter}&limit={limit}")
         res = res.json()
         if all:
@@ -86,6 +86,21 @@ class PSAWConnect:
                     print(f"{_actor} is now following you!".replace('&#39;', '\''))
                 print("\n")
 
+    def number_of_messages(self, user:str=_client):
+        if self.user_exists(user):
+            res = requests.get(f"https://api.scratch.mit.edu/users/{user}/messages/count").json()["count"]
+            return res
+        else:
+            return "User does not exist!"
+
+    
+    def user_exists(self, user:str=_client):
+        try:
+            res = requests.get(f"scratch.mit.edu/users/{user}")
+            print(res)
+            return True
+        except:
+            return False
 
 e = PSAWConnect("MelonMars", "benny1113!")
-e.getmessages()
+e.printmessages()
