@@ -85,6 +85,7 @@ class PSAWConnect:
                     _actor = dict["actor_username"]
                     print(f"{_actor} is now following you!".replace('&#39;', '\''))
                 print("\n")
+
     def profilecomment(self, message:str="None", commentee_id:str="", parent_id:str="", user:str=""):
         headers = {
             "x-csrftoken": self.csrf_token,
@@ -102,17 +103,20 @@ class PSAWConnect:
             "content": message,
             "parent_id": parent_id,
         }
-        return requests.post(f"https://scratch.mit.edu/site-api/comments/user/{user}/add/",headers=headers,data=json.dumps(content),
-        )
+        return requests.post(f"https://scratch.mit.edu/site-api/comments/user/{user}/add/",headers=headers,data=json.dumps(content))
     
-    def number_of_messages(self, user:str=_client):
+    def number_of_messages(self, user:str):
+        if user=="None":
+            user = _client
         if self.user_exists(user):
             res = requests.get(f"https://api.scratch.mit.edu/users/{user}/messages/count").json()["count"]
             return res
         else:
             return "User does not exist!"
 
-    def user_exists(self, user:str=_client):
+    def user_exists(self, user:str):
+        if user=="None":
+            print("That is not a user!")
         try:
             res = requests.get(f"scratch.mit.edu/users/{user}")
             print(res)
