@@ -85,7 +85,7 @@ class PSAWConnect:
                     _actor = dict["actor_username"]
                     print(f"{_actor} is now following you!".replace('&#39;', '\''))
                 print("\n")
-    def profilecomment(self, message:str="None", commentee_id:str="", parent_id:str=""):
+    def profilecomment(self, message:str="None", commentee_id:str="", parent_id:str="", user:str=""):
         headers = {
             "x-csrftoken": self.csrf_token,
             "X-Token": self.token,
@@ -94,7 +94,7 @@ class PSAWConnect:
                       + ";scratchlanguage=en;scratchsessionsid="
                       + self.session_id
                       + ";",
-            "referer": "https://scratch.mit.edu",
+           "referer": "https://scratch.mit.edu/users/" + user + "/",
         }
 
         content = {
@@ -102,8 +102,8 @@ class PSAWConnect:
             "content": message,
             "parent_id": parent_id,
         }
-        res = requests.post("https://scratch.mit.edu/site-api/comments/user/MelonMars/add/", headers=headers, data=json.dumps(content))
-        print(res)
+        return requests.post(f"https://scratch.mit.edu/site-api/comments/user/{user}/add/",headers=headers,data=json.dumps(content),
+        )
     
     def number_of_messages(self, user:str=_client):
         if self.user_exists(user):
