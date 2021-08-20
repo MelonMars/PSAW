@@ -137,3 +137,11 @@ class PSAWConnect:
 
     def get_project_faves(self, proj_id:int):
         return requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers).json()["stats"]["favorites"]
+
+    def fave(self, proj_id:int):
+        return requests.post(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/favorites/user/{self.username}", headers=self.headers).json()
+
+    def unfave(self, proj_id:int):
+        return requests.delete(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/favorites/user/{self.username}", headers=self.headers).json()
+
+
