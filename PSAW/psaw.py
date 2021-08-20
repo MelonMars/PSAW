@@ -126,3 +126,14 @@ class PSAWConnect:
             "https://scratch.mit.edu/site-api/users/followers/"+ unfollow + "/remove/?usernames=" + self.username, headers=self.headers,
         )
 
+    def love(self, proj_id:int):
+        return requests.post(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/loves/user/{self.username}", headers=self.headers).json()
+        
+    def unlove(self, proj_id:int):
+        return requests.delete(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/loves/user/{self.username}", headers=self.headers).json()
+
+    def get_project_loves(self, proj_id:int):
+        return requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers).json()["stats"]["loves"]
+
+    def get_project_faves(self, proj_id:int):
+        return requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers).json()["stats"]["favorites"]
