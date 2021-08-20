@@ -1,5 +1,7 @@
 import requests, json, re
 
+from requests.api import head
+
 
 class PSAWConnect:
     def __init__(self, uname, pword):
@@ -87,23 +89,13 @@ class PSAWConnect:
                 print("\n")
 
     def profilecomment(self, message:str="None", commentee_id:str="", parent_id:str="", user:str=""):
-        headers = {
-            "x-csrftoken": self.csrf_token,
-            "X-Token": self.token,
-            "Cookie": "scratchcsrftoken="
-                      + self.csrf_token
-                      + ";scratchlanguage=en;scratchsessionsid="
-                      + self.session_id
-                      + ";",
-           "referer": "https://scratch.mit.edu/users/" + user + "/",
-        }
 
         content = {
             "commentee_id": commentee_id,
             "content": message,
             "parent_id": parent_id,
         }
-        return requests.post(f"https://scratch.mit.edu/site-api/comments/user/{user}/add/",headers=headers,data=json.dumps(content))
+        return requests.post(f"https://scratch.mit.edu/site-api/comments/user/{user}/add/",headers=self.headers,data=json.dumps(content))
     
     def number_of_messages(self, user:str):
         if user=="None":
@@ -123,3 +115,9 @@ class PSAWConnect:
             return True
         except:
             return False
+
+    def follow(self, follow:str):
+        return requests.put(
+            "https://scratch.mit.edu/site-api/users/followers/"+ follow + "/add/?usernames=" + self.username, headers=self.headers,
+        )
+
