@@ -121,3 +121,8 @@ class PSAWConnect:
             "https://scratch.mit.edu/site-api/users/followers/"+ follow + "/add/?usernames=" + self.username, headers=self.headers,
         )
 
+    def unfollow(self, unfollow:str):
+        return requests.put(
+            "https://scratch.mit.edu/site-api/users/followers/"+ unfollow + "/remove/?usernames=" + self.username, headers=self.headers,
+        )
+
