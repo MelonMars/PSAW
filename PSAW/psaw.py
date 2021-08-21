@@ -169,22 +169,28 @@ class PSAWConnect:
             )
 
     def love(self, proj_id:int):
-        return requests.post(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/loves/user/{self.username}", headers=self.headers).json()
+        if self.project_exists(proj_id):
+            return requests.post(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/loves/user/{self.username}", headers=self.headers).json()
         
     def unlove(self, proj_id:int):
-        return requests.delete(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/loves/user/{self.username}", headers=self.headers).json()
+        if self.project_exists(proj_id):
+            return requests.delete(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/loves/user/{self.username}", headers=self.headers).json()
 
     def get_project_loves(self, proj_id:int):
-        return requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers).json()["stats"]["loves"]
+        if self.project_exists(proj_id):
+            return requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers).json()["stats"]["loves"]
 
     def get_project_faves(self, proj_id:int):
-        return requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers).json()["stats"]["favorites"]
+        if self.project_exists(proj_id):
+            return requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers).json()["stats"]["favorites"]
 
     def fave(self, proj_id:int):
-        return requests.post(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/favorites/user/{self.username}", headers=self.headers).json()
+        if self.project_exists(proj_id):
+            return requests.post(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/favorites/user/{self.username}", headers=self.headers).json()
 
     def unfave(self, proj_id:int):
-        return requests.delete(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/favorites/user/{self.username}", headers=self.headers).json()
+        if self.project_exists(proj_id):
+            return requests.delete(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/favorites/user/{self.username}", headers=self.headers).json()
 
     def get_projects(self, user:str=""):
         if user == "":
@@ -205,6 +211,13 @@ class PSAWConnect:
                 return requests.get(f"https://api.scratch.mit.edu/users/{user}/messages?x-token={self.token}&filter={filter}&limit={limit}").json()
 
     def get_project_views(self, proj_id:int):
-        return requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers).json()["stats"]["views"]
+        if self.project_exists(proj_id):
+            return requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers).json()["stats"]["views"]
+
+    def project_exists(self, proj_id:int):
+        try:
+            res = requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers)
+        except:
+            raise PSAWExceps.InvalidProjectID("Invalid Project ID!")
 
     

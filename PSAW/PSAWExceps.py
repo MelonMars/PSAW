@@ -3,5 +3,9 @@ class InvalidCredentials(Exception):
     pass
 
 class InvalidUser(Exception):
-    #Invalid Username
+    #Username does not exist
+    pass
+
+class InvalidProjectID(Exception):
+    #Project ID does not exist
     pass
