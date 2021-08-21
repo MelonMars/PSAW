@@ -48,7 +48,7 @@ class PSAWConnect:
             "referer": "https://scratch.mit.edu",
         }
 
-    def printmessages(self, all:bool=True, limit:int=10, filter:str="all", user:str=""):
+    def print_messages(self, all:bool=True, limit:int=10, filter:str="all", user:str=""):
         if user == "":
             res = requests.get(f"https://api.scratch.mit.edu/users/{self.username}/messages?x-token={self.token}&filter={filter}&limit={limit}")
             res = res.json()
@@ -188,4 +188,21 @@ class PSAWConnect:
     def unfave(self, proj_id:int):
         return requests.delete(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/favorites/user/{self.username}", headers=self.headers).json()
 
+    def get_projects(self, user:str=""):
+        if user == "":
+            user = self.username
+        else:
+            if self.user_exists(user):
+                pass
+            else:
+                raise Exception("That user does not exist!")
+        
+        return requests.get(f"https://api.scratch.mit.edu/users/{user}/projects/").json() #You can loop through what this returns btw
+
+    def get_messages(self, limit:int=10, filter:str="all", user:str=""):
+        if user == "":
+            return requests.get(f"https://api.scratch.mit.edu/users/{self.username}/messages?x-token={self.token}&filter={filter}&limit={limit}").json()
+        else:
+            if self.user_exists(user):
+                return requests.get(f"https://api.scratch.mit.edu/users/{user}/messages?x-token={self.token}&filter={filter}&limit={limit}").json()
 
