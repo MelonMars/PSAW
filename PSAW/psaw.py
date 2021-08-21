@@ -48,45 +48,88 @@ class PSAWConnect:
             "referer": "https://scratch.mit.edu",
         }
 
-    def printmessages(self, all:bool=True, limit:int=10, filter:str="all"):
-        res = requests.get(f"https://api.scratch.mit.edu/users/{self.username}/messages?x-token={self.token}&filter={filter}&limit={limit}")
-        res = res.json()
-        if all:
-            for dict in res:
-                if dict["type"] == "addcomment":
-                    _actor = dict["actor_username"]
-                    _comment_frag = dict["comment_fragment"]
-                    _comment_src = dict["comment_obj_title"]
-                    print(f"{_actor} sent you a message: {_comment_frag} in {_comment_src}".replace('&#39;', '\''))
-                elif dict["type"] == "studioactivity":
-                    _studio = dict["title"]
-                    print(f"new activity in: {_studio}".replace('&#39;', '\''))
-                elif dict["type"] == "curatorinvite":
-                    _actor = dict["actor_username"]
-                    _studio = dict["title"]
-                    print(f"{_actor} has invited you to {_studio}".replace('&#39;', '\''))
-                elif dict["type"] == "followuser":
-                    _actor = dict["actor_username"]
-                    print(f"{_actor} is now following you!".replace('&#39;', '\''))
-                print("\n")
+    def printmessages(self, all:bool=True, limit:int=10, filter:str="all", user:str=""):
+        if user == "":
+            res = requests.get(f"https://api.scratch.mit.edu/users/{self.username}/messages?x-token={self.token}&filter={filter}&limit={limit}")
+            res = res.json()
+            if all:
+                for dict in res:
+                    if dict["type"] == "addcomment":
+                        _actor = dict["actor_username"]
+                        _comment_frag = dict["comment_fragment"]
+                        _comment_src = dict["comment_obj_title"]
+                        print(f"{_actor} sent you a message: {_comment_frag} in {_comment_src}".replace('&#39;', '\''))
+                    elif dict["type"] == "studioactivity":
+                        _studio = dict["title"]
+                        print(f"new activity in: {_studio}".replace('&#39;', '\''))
+                    elif dict["type"] == "curatorinvite":
+                        _actor = dict["actor_username"]
+                        _studio = dict["title"]
+                        print(f"{_actor} has invited you to {_studio}".replace('&#39;', '\''))
+                    elif dict["type"] == "followuser":
+                        _actor = dict["actor_username"]
+                        print(f"{_actor} is now following you!".replace('&#39;', '\''))
+                    print("\n")
+            else:
+                for dict in res in range(limit):
+                    if dict["type"] == "addcomment":
+                        _actor = dict["actor_username"]
+                        _comment_frag = dict["comment_fragment"]
+                        _comment_src = dict["comment_obj_title"]
+                        print(f"{_actor} sent you a message: {_comment_frag} in {_comment_src}".replace('&#39;', '\''))
+                    elif dict["type"] == "studioactivity":
+                        _studio = dict["title"]
+                        print(f"new activity in: {_studio}".replace('&#39;', '\''))
+                    elif dict["type"] == "curatorinvite":
+                        _actor = dict["actor_username"]
+                        _studio = dict["title"]
+                        print(f"{_actor} has invited you to {_studio}".replace('&#39;', '\''))
+                    elif dict["type"] == "followuser":
+                        _actor = dict["actor_username"]
+                        print(f"{_actor} is now following you!".replace('&#39;', '\''))
+                    print("\n")
         else:
-            for dict in res in range(limit):
-                if dict["type"] == "addcomment":
-                    _actor = dict["actor_username"]
-                    _comment_frag = dict["comment_fragment"]
-                    _comment_src = dict["comment_obj_title"]
-                    print(f"{_actor} sent you a message: {_comment_frag} in {_comment_src}".replace('&#39;', '\''))
-                elif dict["type"] == "studioactivity":
-                    _studio = dict["title"]
-                    print(f"new activity in: {_studio}".replace('&#39;', '\''))
-                elif dict["type"] == "curatorinvite":
-                    _actor = dict["actor_username"]
-                    _studio = dict["title"]
-                    print(f"{_actor} has invited you to {_studio}".replace('&#39;', '\''))
-                elif dict["type"] == "followuser":
-                    _actor = dict["actor_username"]
-                    print(f"{_actor} is now following you!".replace('&#39;', '\''))
-                print("\n")
+            if self.user_exists(user):
+                res = requests.get(f"https://api.scratch.mit.edu/users/{user}/messages?x-token={self.token}&filter={filter}&limit={limit}")
+                res = res.json()
+                if all:
+                    for dict in res:
+                        if dict["type"] == "addcomment":
+                            _actor = dict["actor_username"]
+                            _comment_frag = dict["comment_fragment"]
+                            _comment_src = dict["comment_obj_title"]
+                            print(f"{_actor} sent you a message: {_comment_frag} in {_comment_src}".replace('&#39;', '\''))
+                        elif dict["type"] == "studioactivity":
+                            _studio = dict["title"]
+                            print(f"new activity in: {_studio}".replace('&#39;', '\''))
+                        elif dict["type"] == "curatorinvite":
+                            _actor = dict["actor_username"]
+                            _studio = dict["title"]
+                            print(f"{_actor} has invited you to {_studio}".replace('&#39;', '\''))
+                        elif dict["type"] == "followuser":
+                            _actor = dict["actor_username"]
+                            print(f"{_actor} is now following you!".replace('&#39;', '\''))
+                        print("\n")
+                else:
+                    for dict in res in range(limit):
+                        if dict["type"] == "addcomment":
+                            _actor = dict["actor_username"]
+                            _comment_frag = dict["comment_fragment"]
+                            _comment_src = dict["comment_obj_title"]
+                            print(f"{_actor} sent you a message: {_comment_frag} in {_comment_src}".replace('&#39;', '\''))
+                        elif dict["type"] == "studioactivity":
+                            _studio = dict["title"]
+                            print(f"new activity in: {_studio}".replace('&#39;', '\''))
+                        elif dict["type"] == "curatorinvite":
+                            _actor = dict["actor_username"]
+                            _studio = dict["title"]
+                            print(f"{_actor} has invited you to {_studio}".replace('&#39;', '\''))
+                        elif dict["type"] == "followuser":
+                            _actor = dict["actor_username"]
+                            print(f"{_actor} is now following you!".replace('&#39;', '\''))
+                        print("\n")
+            else:
+                raise Exception("That user does not exist!")
 
     def profilecomment(self, message:str="None", commentee_id:str="", parent_id:str="", user:str=""):
 
@@ -95,7 +138,10 @@ class PSAWConnect:
             "content": message,
             "parent_id": parent_id,
         }
-        return requests.post(f"https://scratch.mit.edu/site-api/comments/user/{user}/add/",headers=self.headers,data=json.dumps(content))
+        if self.user_exists(user):
+            return requests.post(f"https://scratch.mit.edu/site-api/comments/user/{user}/add/",headers=self.headers,data=json.dumps(content))
+        else:
+            raise Exception("User does not exist!")
     
     def number_of_messages(self, user:str):
         if user=="None":
@@ -107,8 +153,6 @@ class PSAWConnect:
             return "User does not exist!"
 
     def user_exists(self, user:str):
-        if user=="None":
-            print("That is not a user!")
         try:
             res = requests.get(f"scratch.mit.edu/users/{user}")
             print(res)
