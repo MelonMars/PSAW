@@ -1,6 +1,6 @@
 import requests, json, re
 
-from requests.api import head
+from PSAW import PSAWExceps
 
 
 class PSAWConnect:
@@ -27,7 +27,7 @@ class PSAWConnect:
             self.session_id = re.search('"(.*)"', request.headers["Set-Cookie"]).group()
             self.token = request.json()[0]["token"]
         except AttributeError:
-            raise Exception('Invalid Username or Password!')
+            raise PSAWExceps.InvalidCredentials('Invalid Username or Password!')
         headers = {
             "x-requested-with": "XMLHttpRequest",
             "Cookie": "scratchlanguage=en;permissions=%7B%7D;",
@@ -140,8 +140,6 @@ class PSAWConnect:
         }
         if self.user_exists(user):
             return requests.post(f"https://scratch.mit.edu/site-api/comments/user/{user}/add/",headers=self.headers,data=json.dumps(content))
-        else:
-            raise Exception("User does not exist!")
     
     def number_of_messages(self, user:str):
         if user=="None":
@@ -149,8 +147,6 @@ class PSAWConnect:
         if self.user_exists(user):
             res = requests.get(f"https://api.scratch.mit.edu/users/{user}/messages/count").json()["count"]
             return res
-        else:
-            return "User does not exist!"
 
     def user_exists(self, user:str):
         try:
@@ -158,17 +154,19 @@ class PSAWConnect:
             print(res)
             return True
         except:
-            return False
+            raise PSAWExceps.InvalidUser("Invalid Username!")
 
     def follow(self, follow:str):
-        return requests.put(
-            "https://scratch.mit.edu/site-api/users/followers/"+ follow + "/add/?usernames=" + self.username, headers=self.headers,
-        )
+        if self.user_exists(follow):
+            return requests.put(
+                "https://scratch.mit.edu/site-api/users/followers/"+ follow + "/add/?usernames=" + self.username, headers=self.headers,
+            )
 
     def unfollow(self, unfollow:str):
-        return requests.put(
-            "https://scratch.mit.edu/site-api/users/followers/"+ unfollow + "/remove/?usernames=" + self.username, headers=self.headers,
-        )
+        if self.user_exists(unfollow):
+            return requests.put(
+                "https://scratch.mit.edu/site-api/users/followers/"+ unfollow + "/remove/?usernames=" + self.username, headers=self.headers,
+            )
 
     def love(self, proj_id:int):
         return requests.post(f"https://api.scratch.mit.edu/proxy/projects/{proj_id}/loves/user/{self.username}", headers=self.headers).json()
@@ -206,3 +204,7 @@ class PSAWConnect:
             if self.user_exists(user):
                 return requests.get(f"https://api.scratch.mit.edu/users/{user}/messages?x-token={self.token}&filter={filter}&limit={limit}").json()
 
+    def get_project_views(self, proj_id:int):
+        return requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/", headers=self.headers).json()["stats"]["views"]
+
+    
