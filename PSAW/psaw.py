@@ -131,7 +131,7 @@ class PSAWConnect:
             else:
                 raise Exception("That user does not exist!")
 
-    def profilecomment(self, message:str="None", commentee_id:str="", parent_id:str="", user:str=""):
+    def profilecomment(self, message:str="None", user:str="", commentee_id:str="", parent_id:str=""):
 
         content = {
             "commentee_id": commentee_id,
@@ -259,4 +259,3 @@ class PSAWConnect:
             for dict in res:
                 faves[dict["title"]] = dict["id"]
             return faves
-    
