@@ -1,7 +1,7 @@
 from distutils.core import setup
 setup(
-  name = 'PSAW',         # How you named your package folder (MyLib)
-  packages = ['PSAW'],   # Chose the same as "name"
+  name = 'PythonScratchApiWrapper',         # How you named your package folder (MyLib)
+  packages = ['PythonScratchApiWrapper'],   # Chose the same as "name"
   version = '0.2',      
   license='MIT',        
   description = 'A python api wrapper for scratch',   
