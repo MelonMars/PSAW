@@ -259,3 +259,4 @@ class PSAWConnect:
             for dict in res:
                 faves[dict["title"]] = dict["id"]
             return faves
+    
