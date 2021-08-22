@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'PSAW',         # How you named your package folder (MyLib)
   packages = ['PSAW'],   # Chose the same as "name"
-  version = '0.1',      
+  version = '0.2',      
   license='MIT',        
   description = 'A python api wrapper for scratch',   
   author = 'Carter Pfaff',                   
