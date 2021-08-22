@@ -8,7 +8,7 @@ setup(
   author = 'Carter Pfaff',                   
   author_email = 'carterpfaff@gmail.com',      
   url = 'https://github.com/MelonMars/PSAW',   
-  download_url = 'hthttps://github.com/MelonMars/PSAW/archive/refs/tags/V_01.tar.gz',    
+  download_url = 'https://github.com/MelonMars/PSAW/archive/refs/tags/V_01.tar.gz',    
   keywords = ['Python', 'API Wrapper', 'API', 'scratch', 'Scratch'],   
   install_requires=[          
           'requests',
