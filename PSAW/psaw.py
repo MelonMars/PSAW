@@ -246,3 +246,16 @@ class PSAWConnect:
                 followers.append(dict["username"])
             return followers
 
+    def get_user_faves(self, user:str="", all:bool=True, limit:int=50):
+        if all:
+            res = requests.get(f"https://api.scratch.mit.edu/users/{user}/favorites").json()
+            faves = {}
+            for dict in res:
+                faves[dict["title"]] = dict["id"]
+            return faves
+        else:
+            res = requests.get(f"httpsL//api.scratch.mit.edu/users/{user}/favorites?limit={limit}").json()
+            faves = {}
+            for dict in res:
+                faves[dict["title"]] = dict["id"]
+            return faves
