@@ -220,4 +220,29 @@ class PSAWConnect:
         except:
             raise PSAWExceps.InvalidProjectID("Invalid Project ID!")
 
-    
+    def get_health(self):
+        return requests.get("https://api.scratch.mit.edu/health".json())
+
+    def get_news(self):
+        return requests.get("https://api.scratch.mit.edu/news").json()
+
+    def get_featured(self):
+        return requests.get("https://api.scratch.mit.edu/proxy/featured").json()
+
+    def get_followers(self, user:str="", all:bool=True, limit:int=50):
+        if user == "":
+            user = self.username
+        
+        if all:
+            followers = []
+            res = requests.get(f"https://api.scratch.mit.edu/users/{user}/followers/").json()
+            for dict in res:
+                followers.append(dict["username"])
+            return followers
+        else:
+            followers = []
+            res = requests.get(f"https://api.scratch.mit.edu/users/MelonMars/followers/?limit={limit}")
+            for dict in res:
+                followers.append(dict["username"])
+            return followers
+
