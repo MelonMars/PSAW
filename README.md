@@ -13,12 +13,11 @@ Table of contents
 
 **Logging in**
 Logging is very basic, to log in, and do everything that requires being logged in, one simply needs to use the code below
-<pre>
+```
 import psaw
 
 user = PSAWConnect(username, password) #Put your username and password here
-</pre>
-
+```
 **Commenting**
     
 There are several types of comments in scratch, however, currently in this package, only 1 type is supported (however the others will be added soon). 
