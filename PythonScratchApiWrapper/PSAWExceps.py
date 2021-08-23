@@ -9,3 +9,7 @@ class InvalidUser(Exception):
 class InvalidProjectID(Exception):
     #Project ID does not exist
     pass
+
+class Unathourized(Exception):
+    #Unauthourized to do action
+    pass

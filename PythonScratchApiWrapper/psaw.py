@@ -1,3 +1,4 @@
+from PythonScratchApiWrapper.PSAWExceps import Unathourized
 import requests, json, re
 
 from PSAW import PSAWExceps
@@ -259,3 +260,25 @@ class PSAWConnect:
             for dict in res:
                 faves[dict["title"]] = dict["id"]
             return faves
+
+    def project_comment(self, project_id:int, content, parent_id="", commentee_id=""):
+        data = {
+            "commentee_id": commentee_id,
+            "content": content,
+            "parent_id": parent_id,
+        }
+        return requests.post(
+            "https://api.scratch.mit.edu/proxy/comments/project/" + str(project_id) + "/",
+            headers=self.json_headers,
+            data=json.dumps(data),
+        )
+
+
+    def get_project_creator(self, proj_id:int):
+            res = requests.get(f"https://api.scratch.mit.edu/projects/{proj_id}/").json
+            return dict(f"""
+            {{
+                "username": {res["author"]["username"]},
+                "id": {res["author"]["id"]}
+            }}
+            """)
