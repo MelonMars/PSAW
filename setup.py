@@ -2,8 +2,7 @@ from distutils.core import setup
 setup(
   name = 'PythonScratchApiWrapper',         # How you named your package folder (MyLib)
   packages = ['PythonScratchApiWrapper'],   # Chose the same as "name"
-  version = '0.2',      
-  license='MIT',        
+  version = '0.33', 
   description = 'A python api wrapper for scratch',   
   author = 'Carter Pfaff',                   
   author_email = 'carterpfaff@gmail.com',      

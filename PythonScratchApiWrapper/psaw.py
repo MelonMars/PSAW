@@ -1,7 +1,7 @@
 from PythonScratchApiWrapper.PSAWExceps import Unathourized
 import requests, json, re
 
-from PSAW import PSAWExceps
+from PythonScratchApiWrapper import PSAWExceps
 
 
 class PSAWConnect:
